@@ -1,7 +1,7 @@
 import argparse
 import json
-from model import DeepSeek_API,Qwen,Zhipu,Doubao,deepcoder,GPT4
-from Solve_VCSearch import solve_zero_each
+from model import DeepSeek_API,Qwen,Zhipu,Doubao,deepcoder
+from Solve_VCSearch import solve_VCSearch_each
 import tqdm
 import random
 import datetime
@@ -43,8 +43,8 @@ def get_args():
 
 def solve(args,ask_question,chat_model):
     print(args.algo)
-    if args.algo == "zero":
-        record = solve_zero_each(ask_question=ask_question,chat_model=chat_model)
+    if args.algo == "VCSearch":
+        record = solve_VCSearch_each(ask_question=ask_question,chat_model=chat_model)
     else:
         raise ValueError
     
@@ -79,19 +79,8 @@ if __name__ == "__main__":
 
     input_list = [args.dataset]
     for file_name in input_list:
-        input_file = 'new_datasets/' + file_name + ".jsonl"
-        output_file = "results_Arrmay_Rebuttal/" +args.model + "/" +args.algo + "/"+ file_name + "_"+ args.log + "_(sam)" + str(args.sample) + "_" + args.time +".jsonl"
-        # if args.sample == True:
-
-        # if args.final == True:
-        #     output_file = "results_final/" +args.model + "/" +args.algo + "/"+ file_name + "_"+ args.algo + "_"+ args.time +".jsonl"
-        # elif args.sample == False and "trap" not in args.dataset.lower():
-        #     output_file = "results120/" +args.model + "/" +args.algo + "/" + file_name + "_"+ args.algo + "_"+ args.time +".jsonl"
-        # else:
-        #     if args.log !=None:
-        #         output_file = "results_sample120/"+ args.log + "/" +args.model + "/" +args.algo + "/"+ file_name + "_"+ args.algo + "_"+ args.time +".jsonl"
-        #     else:
-        #         output_file = "results_sample120/" +args.model + "/" +args.algo + "/"+ file_name + "_"+ args.algo + "_"+ args.time +".jsonl"
+        input_file = 'datasets/' + file_name + ".jsonl"
+        output_file = "results/" + args.model + "/" + args.algo + "/"+ file_name + "_"+ args.log + "_" + args.time +".jsonl"
 
         directory = os.path.dirname(output_file)
         if not os.path.exists(directory):
@@ -112,17 +101,13 @@ if __name__ == "__main__":
         ans=[]
         # print(data)
         for idx, line in tqdm.tqdm(enumerate(sampled_data), total=len(sampled_data)):
-            if "contra" in file_name:
-                ask_question = line['New']
-                target = None
-            elif "mathtrap" in file_name.lower() or "missing" in file_name:
+            if "contra" in file_name or "missing" in file_name:
                 ask_question = line['Question']
                 target = None
             else: #ID
                 ask_question = line['Question']
                 target = line['target']
             try:
-
                 set_timeout(300)
                 record = solve(args,ask_question,chat_model=chat_model)
 

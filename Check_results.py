@@ -85,11 +85,8 @@ class CHECKER:
             else:
                 ans = convert_to_float(candidate_ans)
 
-        # try: 
         if ans == target:
             self.cor += 1
-        # except:
-        #     pass
 
 
 def get_belong(input_string):
@@ -146,7 +143,7 @@ if __name__ == "__main__":
 
     args = get_args()
 
-    directory = "results_sample120/debugv3/deepseek"
+    directory = "results/Qwen7b/VCSearch"
 
     for root, dirs, files in os.walk(directory):
         for file in files:

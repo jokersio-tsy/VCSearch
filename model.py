@@ -52,7 +52,7 @@ class Qwen():
     def __init__(self, model):
         # /data1/tiansy/model_download/Qwen/Qwen2___5-Coder-7B-Instruct/
         if model == "Qwen7b":
-            self.model_name = "" # your path
+            self.model_name = "/data1/tiansy/model_download/Qwen/Qwen2___5-Coder-7B-Instruct/" # your path
         elif model == "Qwen3b":
             self.model_name = "" # your path
         elif model == "Qwen1.5b":
